@@ -10,7 +10,6 @@ pipeline {
             steps {
                 
                 }
-            }
         }
         stage('run') {
             steps {
@@ -24,6 +23,7 @@ pipeline {
         }
 		stage('nexus') {
             steps {
+			}
 			
         }
     }
