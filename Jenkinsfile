@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    tools{
-		gradle 'gradle'
-		maven 'maven'
-	}
 	parameters{
 		choice(name: 'Build_Tool', choices:['maven', 'gradle'], description: '')
 	}
