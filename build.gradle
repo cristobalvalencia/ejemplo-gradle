@@ -8,6 +8,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'org.sonarqube'
 }
 
 repositories {
@@ -22,6 +23,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.6'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools:2.3.4.RELEASE'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.3.4.RELEASE'
+    classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5'
 }
 
 group = 'com.devopsusach2020'
@@ -43,4 +45,12 @@ tasks.withType(JavaCompile) {
 
 test {
  useJUnitPlatform()
+}
+
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+  properties {
+    property "sonar.host.url", "http://sonarqube:9000"
+  }
 }
