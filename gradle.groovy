@@ -1,4 +1,4 @@
-def call(stage){
+def call(){
   
   stage(){
     sh 'gradle build'

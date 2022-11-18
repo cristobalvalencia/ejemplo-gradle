@@ -4,7 +4,7 @@
 	ejecucion.call()
 */
 
-def call(stage){
+def call(){
   
   stage(){
     echo 'Compile..'

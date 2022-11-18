@@ -10,19 +10,15 @@ pipeline {
 	stages {
         stage('Executing..') {
             steps{
-                when{
-                    expression{
-                        params.Build_Tool == 'maven'
+                script{
+                    if(params.Build_Tool == 'maven'){
+                        def ejecucion = load 'maven.groovy'
+	                    ejecucion.call()
                     }
-                    def ejecucion = load 'maven.groovy'
-	                ejecucion.call()
-                }
-                when{
-                    expression{
-                        params.Build_Tool == 'gradle'
+                    if(params.Build_Tool == 'gradle'){
+                        def ejecucion = load 'gradle.groovy'
+	                    ejecucion.call()
                     }
-                    def ejecucion = load 'gradle.groovy'
-	                ejecucion.call()
                 }
             }
         }
