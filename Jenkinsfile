@@ -10,12 +10,14 @@ pipeline {
 	stages {
         stage('Executing..') {
             steps{
-                if(params.Build_Tool == 'maven'){
-                    def ejecucion = load 'maven.groovy'
-	                ejecucion.call()
-                } else{
-                    def ejecucion = load 'gradle.groovy'
-	                ejecucion.call()
+                script{
+                    if(params.Build_Tool == 'maven'){
+                        def ejecucion = load 'maven.groovy'
+	                    ejecucion.call()
+                    } else{
+                        def ejecucion = load 'gradle.groovy'
+	                    ejecucion.call()
+                    }
                 }
             }
         }
@@ -35,6 +37,7 @@ pipeline {
 		stage ('Testing Artifact'){
             steps
                 {
+                    script{
                     if(params.Build_Tool == 'maven'){
                         sh 'nohup bash mvnw spring-boot:run &'
                     } else{
@@ -42,6 +45,7 @@ pipeline {
                     }
 					timeout 5
 					sh 'curl -X GET "http://localhost:8081/rest/mscovid/test?msg=testing"'
+                    }
                 }
         }
 
