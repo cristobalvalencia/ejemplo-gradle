@@ -6,12 +6,8 @@
 
 def exec(){
   
-    echo 'Compile..'
-    sh "./mvnw clean compile -e"
-    echo 'Testing..'
-    sh "./mvnw clean test -e"
-    echo 'Package..'
-    sh "./mvnw clean package -e"
+    echo 'Building..'
+    sh "mvn clean install"
     echo 'SonarQube..'
     withSonarQubeEnv('Sonar'){
 		  sh 'mvn clean package sonar:sonar'

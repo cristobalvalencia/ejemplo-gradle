@@ -11,7 +11,7 @@ pipeline {
 		choice(name: 'Build_Tool', choices:['maven', 'gradle'], description: '')
 	}
 	stages {
-        stage('Executing..') {
+        stage('Building..') {
             steps{
                 script{
                     if(params.Build_Tool == 'maven'){
