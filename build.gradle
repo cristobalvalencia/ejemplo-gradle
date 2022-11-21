@@ -24,7 +24,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.6'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools:2.3.4.RELEASE'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.3.4.RELEASE'
-    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.4.0.2513"
 }
 
 group = 'com.devopsusach2020'
