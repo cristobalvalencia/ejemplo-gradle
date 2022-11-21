@@ -4,9 +4,8 @@
 	ejecucion.call()
 */
 
-def call(){
+def exec(){
   
-  stage(){
     echo 'Compile..'
     sh "./mvnw clean compile -e"
     echo 'Testing..'
@@ -15,15 +14,8 @@ def call(){
     sh "./mvnw clean package -e"
     echo 'SonarQube..'
     withSonarQubeEnv('Sonar'){
-		sh 'mvn clean package sonar:sonar'
+		  sh 'mvn clean package sonar:sonar'
     }
-    echo 'QualityGate..'
-    timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
-    }
-
-  }
-
 }
 
 return this;
