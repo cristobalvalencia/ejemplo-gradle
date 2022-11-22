@@ -41,15 +41,16 @@ pipeline {
                     sh 'curl -X GET -u admin:admin http://nexus:8081/repository/EjercicioUnificar/com.devopsusachs2020.DevOpsUsach2020.0.0.1.jar -O'
                 }
         }
-        post{
+           
+    }
+    post{
             failure{
                 slackSend channel: 'C044C4RDF26', message: "${custom_msg()}", teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
             }
             sucess{
                 slackSend channel: 'C044C4RDF26', message: '[Cristobal Valencia] [Slack_notification] [$env.] Ejecución correcta', teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
             }
-        }     
-    }
+        }  
 
 }
 
