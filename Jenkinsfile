@@ -36,13 +36,14 @@ pipeline {
             steps {
                 script{
                     stg = 'uploadNexus'
-                }
+                
                 echo 'Uploading Nexus'
                 if(params.Build_Tool == 'maven'){
 				    nexusPublisher nexusInstanceId: 'nsx01', nexusRepositoryId: 'EjercicioUnificar-maven', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '/var/jenkins_home/workspace/ejemplo-gradle_maven-gradle/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
                 }
                 if(params.Build_Tool == 'gradle'){
                     nexusPublisher nexusInstanceId: 'nsx01', nexusRepositoryId: 'EjercicioUnificar-gradle', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '/var/jenkins_home/workspace/ejemplo-gradle_maven-gradle/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+                }
                 }
             }
             
