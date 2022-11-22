@@ -15,6 +15,7 @@ pipeline {
         stage('Building..') {
             steps{
                 script{
+                    stg == 'Building'
                     if(params.Build_Tool == 'maven'){
                         mvn = load 'maven.groovy'
                         mvn.exec()
@@ -28,29 +29,27 @@ pipeline {
                 timeout(time: 1, unit: 'HOURS') {
                     waitForQualityGate abortPipeline: true
                 }
-            script{
-                stg = 'Building'
-            }
             }
             
         }
-        stage('uploadNexus') {
+        stage('uploadNexus') { 
             steps {
+                script{
+                    stg = 'uploadNexus'
+                }
                 echo 'Uploading Nexus'
 				nexusPublisher nexusInstanceId: 'nsx01', nexusRepositoryId: 'EjercicioUnificar', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '/var/jenkins_home/workspace/ejemplo-gradle_maven-gradle/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
-            script{
-                stg = 'uploadNexus'
-            }
+            
             }
             
         }
         stage ('Download Artifact'){
             steps
                 {
+                    script{
+                    stg == 'Download Artifact'
+                    }
                     sh 'curl -X GET -u admin:admin http://nexus:8081/repository/EjercicioUnificar/com.devopsusachs2020.DevOpsUsach2020.0.0.1.jar -O'
-                script{
-                stg = 'Download Artifact'
-            }
                 }
                 
         }
