@@ -54,18 +54,15 @@ pipeline {
                 }
                 
         }
-        stage ('Slack Notification'){
-            steps{
-                slackSend channel: 'C044C4RDF26', message: '[Cristobal Valencia] [Slack_notification] [$env.] Ejecución correcta', teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
-            }
-        }
            
     }
     post{
             failure{
                 slackSend channel: 'C044C4RDF26', message: "${custom_msg()}", teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
             }
-
+            success{
+                slackSend channel: 'C044C4RDF26', message: '[Cristobal Valencia] [Slack_notification] [$env.] Ejecución correcta', teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
+            }
         }  
 
 }
