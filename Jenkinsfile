@@ -106,9 +106,9 @@ def aumentarVersion()
     echo "Comienzo aumentarVersion()"
     def tg = extraeTag()
     echo "Paso primer metodo"
-    def branch = env.BRANCH_NAME
-    def chbranch = env.CHANGE_BRANCH  
-    def vActual = sh "cat ${env.WORKSPACE}/pom.xml | grep <version>"
+    def branch = ${env.BRANCH_NAME}
+    def chbranch = ${env.CHANGE_BRANCH}
+    def vActual = sh(script: "cat ${env.WORKSPACE}/pom.xml | grep <version>", returnStdout: true).toString().trim()
     def vNuevo = "<version>${tg}</version>"
 
     if(branch == "develop"){
@@ -120,7 +120,7 @@ def aumentarVersion()
     if(branch == 'feature*' || branch == 'release*' ){
         echo "Entro a if."
     }
-
-    return "${vNuevo} /// ${vActual} /// ${chbranch} /// ${branch} /// ${tag}"
+    echo "${vNuevo} /// ${vActual} /// ${chbranch} /// ${branch} /// ${tag}"
+    return vNuevo
 }
 
