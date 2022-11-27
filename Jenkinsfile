@@ -93,7 +93,7 @@ def extraeTag()
 {   
     sh "git pull"
     sh "ls ${env.WORKSPACE}/.git/refs/tags/ > /var/jenkins_home/trabajo/tag.txt"
-    String tag = tag + sh "cat /var/jenkins_home/trabajo/tag.txt"
+    String tag = ${tag} + sh "cat /var/jenkins_home/trabajo/tag.txt"
     echo "${tag}"
 
     
