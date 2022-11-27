@@ -97,7 +97,7 @@ def extraeTag()
     echo "${tag}"
     largo = tag.length()
     echo "${largo}"
-    def resultado = tag.subString(largo-5, largo)
+    def resultado = tag.substring(largo-5, largo)
     echo "${resultado}"
     return resultado
 }
