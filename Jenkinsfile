@@ -93,8 +93,9 @@ def extraeTag()
 {   
     sh "git pull"
     sh "ls ${env.WORKSPACE}/.git/refs/tags/ > /var/jenkins_home/trabajo/tag.txt"
-    def tag = sh "cat /var/jenkins_home/trabajo/tag.txt"
+    String tag = sh "cat /var/jenkins_home/trabajo/tag.txt"
     echo "${tag}"
+    
     
     tag = tag.subString(tag.lenght()-5, tag.lenght())
 
