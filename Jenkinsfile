@@ -110,16 +110,18 @@ def aumentarVersion()
     echo "paso branch"
     echo "${branch}"
     def vActual = sh(script: "cat ${env.WORKSPACE}/pom.xml | grep <version>", returnStdout: true).toString().trim()
-    def vNuevo = "<version>${tg}</version>"
 
-    if(branch == "develop"){
-        
-    }
-    if(branch == "main"){
-        
-    }
-    if(branch == 'feature*' || branch == 'release*' ){
-        echo "Entro a if."
+    def vNuevo = "<version>${tg}</version>"
+    script{
+        if(${branch} == "develop"){
+            
+        }
+        if(${branch} == "main"){
+            
+        }
+        if(${branch} == 'feature*' || ${branch} == 'release*' ){
+            echo "Entro a if."
+        }
     }
     echo "${vNuevo} /// ${vActual} /// ${chbranch} /// ${branch} /// ${tag}"
     return vNuevo
