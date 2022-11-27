@@ -83,7 +83,7 @@ pipeline {
                 slackSend channel: 'C044C4RDF26', message: "${custom_msg()} [RESULTADO: ERROR]", teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
             }
             success{
-                slackSend channel: 'C044C4RDF26', message: "${custom_msg()} [STAGE: ${stg}][RESULTADO: EXITO]", teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
+                slackSend channel: 'C044C4RDF26', message: "${custom_msg()} STAGE: ${stg}][RESULTADO: EXITO]", teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
             }
         }  
 
@@ -91,12 +91,11 @@ pipeline {
 
 def custom_msg()
 {
-    def stage = stg
     def AUTHOR = obtenerAutor()
     def JOB_NAME = env.JOB_NAME
     def BUILD_ID= env.BUILD_ID
     def version = extraeTag()
-    def MSG= "[GRUPO-4 ${AUTHOR}] [BRANCH: ${JOB_NAME} VERSION: ${version} STAGE: ${stage}]"
+    def MSG= "[GRUPO-4 ${AUTHOR}] [BRANCH: ${JOB_NAME} VERSION: ${version}"
     return MSG
 }
 
