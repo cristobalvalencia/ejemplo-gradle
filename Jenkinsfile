@@ -15,7 +15,7 @@ pipeline {
         stage('Building..') {
             steps{
                 script{
-                    stg == 'Building'
+                    ${stg} == 'Building'
                     if(params.Build_Tool == 'maven'){
                         mvn = load 'maven.groovy'
                         mvn.exec()
@@ -35,17 +35,17 @@ pipeline {
         stage('TAGS') { 
             steps {
                 script{
-                    stg = 'TAGS'
+                    ${stg} = 'TAGS'
                 }
-                ${extraeTag()}
-                ${aumentarVersion()}
+                extraeTag()
+                aumentarVersion()
             }
             
         }
         stage('uploadNexus') { 
             steps {
                 script{
-                    stg = 'uploadNexus'
+                    ${stg} = 'uploadNexus'
                 
                 echo 'Uploading Nexus'
                 if(params.Build_Tool == 'maven'){
