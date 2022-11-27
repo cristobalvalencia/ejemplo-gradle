@@ -35,7 +35,7 @@ pipeline {
                         grdl = load 'gradle.groovy'
 	                    grdl.exec()
                     }
-                    stg == 'QualityGate'
+                    stg = "QualityGate"
                 }
                 echo 'QualityGate..'
                 timeout(time: 1, unit: 'HOURS') {
@@ -50,7 +50,7 @@ pipeline {
                 
                 script{
                     def tag = extraeTag()
-                    stg == 'uploadNexus'
+                    stg = "uploadNexus"
 
                     echo 'Uploading Nexus'
                     if(params.Build_Tool == 'maven'){
@@ -68,7 +68,7 @@ pipeline {
             steps
                 {
                     script{
-                        stg == 'Testing Artifact'
+                        stg = "Testing Artifact"
                     }
                     echo 'Testing Artifact'
                     sh 'curl -X GET -u admin:admin http://nexus:8081/repository/EjercicioUnificar/com.devopsusachs2020.DevOpsUsach2020.0.0.1.jar -O'
