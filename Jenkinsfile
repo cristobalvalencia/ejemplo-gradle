@@ -123,7 +123,7 @@ def aumentarVersion()
     vActual = "<version>${vActual}</version>"
     def vNuevo = "<version>${tg}</version>"
     echo "${vNuevo}"
-
+    echo "./var/jenkins_home/trabajo/cambioTag.sh ${vActual} ${vNuevo} ${env.WORKSPACE}"
     sh "./var/jenkins_home/trabajo/cambioTag.sh ${vActual} ${vNuevo} ${env.WORKSPACE}"
     script{
         if("${branch}" == 'develop'){
