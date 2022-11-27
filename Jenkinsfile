@@ -44,8 +44,9 @@ pipeline {
         }
         stage('uploadNexus') { 
             steps {
-                def tag = extraeTag()
+                
                 script{
+                    def tag = extraeTag()
                     stg == 'uploadNexus'
 
                     echo 'Uploading Nexus'
