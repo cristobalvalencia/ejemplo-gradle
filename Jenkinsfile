@@ -90,10 +90,11 @@ def custom_msg()
 }
 
 def extraeTag()
-{
-    def tag = sh "ls ${env.WORKSPACE}/.git/refs/tags/"
-    echo "${tag}"
+{   
     sh "git pull"
+    def tag =sh "basename -a ${env.WORKSPACE}/.git/refs/tags/*"
+    echo "${tag}"
+    
     tag = tag.subString(tag.lenght()-5, tag.lenght())
 
     return tag
