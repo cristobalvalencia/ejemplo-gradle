@@ -35,7 +35,7 @@ pipeline {
         stage('TAGS') { 
             steps {
                 script{
-                    stg = 'TAGS'
+                    stg == 'TAGS'
                 }
                 extraeTag()
                 aumentarVersion()
@@ -45,7 +45,7 @@ pipeline {
         stage('uploadNexus') { 
             steps {
                 script{
-                    stg = 'uploadNexus'
+                    stg == 'uploadNexus'
                 
                 echo 'Uploading Nexus'
                 if(params.Build_Tool == 'maven'){
@@ -71,7 +71,7 @@ pipeline {
     }
     post{
             failure{
-                slackSend channel: 'C044C4RDF26', message: "${custom_msg()}", teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
+                slackSend channel: 'C044C4RDF26', message: "${custom_msg(${stg})}", teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
             }
             success{
                 slackSend channel: 'C044C4RDF26', message: '[Cristobal Valencia] [Slack_notification] [$env.] Ejecución correcta', teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
@@ -80,24 +80,23 @@ pipeline {
 
 }
 
-def custom_msg()
+def custom_msg(stage)
 {
   def AUTHOR = env.CHANGE_AUTHOR
   def JOB_NAME = env.JOB_NAME
   def BUILD_ID= env.BUILD_ID
-  def MSG= "[${AUTHOR}] STAGE: ${stg} FAILED: Job [${JOB_NAME}] Logs path: localhost:8080/job/${JOB_NAME}/${BUILD_ID}/consoleText"
+  def MSG= "[${AUTHOR}] STAGE: ${stage} FAILED: Job [${JOB_NAME}] Logs path: localhost:8080/job/${JOB_NAME}/${BUILD_ID}/consoleText"
   return MSG
 }
 
 def extraeTag()
 {   
-    def tag = ""
     sh "git pull"
     sh "ls ${env.WORKSPACE}/.git/refs/tags/ > /var/jenkins_home/trabajo/tag.txt"
-    tag = sh(script: "cat /var/jenkins_home/trabajo/tag.txt", returnStdout: true).toString().trim()
+    String tag[] = sh(script: "cat /var/jenkins_home/trabajo/tag.txt", returnStdout: true).toString().trim()
     echo "${tag}"
-    tag = tag.subString(tag.lenght()-5, tag.lenght())
-
+    tag = tag.subString(tag.length()-5, tag.length())
+    echo "${tag}"
     return tag
 }
 
