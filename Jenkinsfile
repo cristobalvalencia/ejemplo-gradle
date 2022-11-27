@@ -18,6 +18,7 @@ pipeline {
                 script{
                     stg == 'Version'
                 }
+                echo "${obtenerAutor()}"
                 aumentarVersion()
             }
             
@@ -34,6 +35,7 @@ pipeline {
                         grdl = load 'gradle.groovy'
 	                    grdl.exec()
                     }
+                    stg == 'QualityGate'
                 }
                 echo 'QualityGate..'
                 timeout(time: 1, unit: 'HOURS') {
@@ -60,10 +62,13 @@ pipeline {
             }
             
         }
-        stage ('Download Artifact'){
+        stage ('Testing Artifact'){
             steps
                 {
-                    echo 'Download Artifact'
+                    script{
+                        stg == 'Testing Artifact'
+                    }
+                    echo 'Testing Artifact'
                     sh 'curl -X GET -u admin:admin http://nexus:8081/repository/EjercicioUnificar/com.devopsusachs2020.DevOpsUsach2020.0.0.1.jar -O'
                     
                 }
@@ -73,22 +78,24 @@ pipeline {
     }
     post{
             failure{
-                slackSend channel: 'C044C4RDF26', message: "${custom_msg(${stg})}", teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
+                slackSend channel: 'C044C4RDF26', message: "${custom_msg()} [RESULTADO: ERROR]", teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
             }
             success{
-                slackSend channel: 'C044C4RDF26', message: '[Cristobal Valencia] [Slack_notification] [$env.] Ejecución correcta', teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
+                slackSend channel: 'C044C4RDF26', message: "${custom_msg()} [RESULTADO: EXITO]", teamDomain: 'diplomadodevo-izc9001', tokenCredentialId: 'slack'
             }
         }  
 
 }
 
-def custom_msg(stage)
+def custom_msg()
 {
-  def AUTHOR = env.CHANGE_AUTHOR
-  def JOB_NAME = env.JOB_NAME
-  def BUILD_ID= env.BUILD_ID
-  def MSG= "[${AUTHOR}] STAGE: ${stage} FAILED: Job [${JOB_NAME}] Logs path: localhost:8080/job/${JOB_NAME}/${BUILD_ID}/consoleText"
-  return MSG
+    def stage = "${stg}"
+    def AUTHOR = obtenerAutor()
+    def JOB_NAME = env.JOB_NAME
+    def BUILD_ID= env.BUILD_ID
+    def version = extraeTag()
+    def MSG= "[GRUPO-4 ${AUTHOR}] [BRANCH: ${JOB_NAME} VERSION: ${version} STAGE: ${stage}]"
+    return MSG
 }
 
 def extraeTag()
@@ -109,20 +116,22 @@ def tagAntiguo()
     def resultado = tag.substring(largo-11, largo-6)
     return resultado
 }
+def obtenerAutor()
+{   
+    sh "git pull"
+    def autor = sh(script: "git log -p -1 | grep Author", returnStdout: true).toString().trim()
+    largo = tag.length()
+    def resultado = autor.substring(8, largo)
+    return resultado
+}
 
 def aumentarVersion()
 {
-    echo "Comienzo aumentarVersion()"
     def tg = extraeTag()
-    echo "Paso primer metodo"
     def branch = env.BRANCH_NAME
-    echo "paso branch"
-    echo "${branch}"
-    echo "${env.WORKSPACE}"
     def vActual = tagAntiguo()
     vActual = "${vActual}"
     def vNuevo = "${tg}"
-    echo "sh /var/jenkins_home/trabajo/cambioTag.sh ${vActual} ${vNuevo} ${env.WORKSPACE}"
     sh "/var/jenkins_home/trabajo/cambioTag.sh ${vActual} ${vNuevo} ${env.WORKSPACE}"
     script{
         if("${branch}" == 'develop'){
@@ -133,7 +142,6 @@ def aumentarVersion()
             echo "Entro a if."
         }
     }
-    echo "${vNuevo} /// ${vActual} /// ${branch} /// ${tg}"
     return vNuevo
 }
 
