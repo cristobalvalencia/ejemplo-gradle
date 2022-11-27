@@ -125,7 +125,6 @@ def aumentarVersion()
     echo "${vNuevo}"
 
     sh "sed s/${vActual}/${vNuevo}/g ${env.WORKSPACE}/pom.xml"
-    sh "sed s/${vActual}/${vNuevo}/g ${env.WORKSPACE}"
     script{
         if("${branch}" == 'develop'){
             echo "Entro a if develop"
