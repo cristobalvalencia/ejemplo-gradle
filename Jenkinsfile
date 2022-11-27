@@ -100,6 +100,18 @@ def extraeTag()
     echo "${resultado}"
     return resultado
 }
+def tagAntiguo()
+{   
+    sh "git pull"
+    sh "ls ${env.WORKSPACE}/.git/refs/tags/ > /var/jenkins_home/trabajo/tag.txt"
+    def tag = sh(script: "cat /var/jenkins_home/trabajo/tag.txt", returnStdout: true).toString().trim()
+    echo "${tag}"
+    largo = tag.length()
+    echo "${largo}"
+    def resultado = tag.substring(largo-11, largo-6)
+    echo "${resultado}"
+    return resultado
+}
 
 def aumentarVersion()
 {
@@ -110,7 +122,7 @@ def aumentarVersion()
     echo "paso branch"
     echo "${branch}"
     echo "${env.WORKSPACE}"
-    def vActual = sh(script: "cat ${env.WORKSPACE}/pom.xml | grep <version>", returnStdout: true).toString().trim()
+    def vActual = tagAntiguo()
     echo "${vActual}"
     def vNuevo = "<version>${tg}</version>"
     echo "${vNuevo}"
