@@ -106,8 +106,9 @@ def aumentarVersion()
     echo "Comienzo aumentarVersion()"
     def tg = extraeTag()
     echo "Paso primer metodo"
-    def branch = ${env.BRANCH_NAME}
-    def chbranch = ${env.CHANGE_BRANCH}
+    def branch = env.BRANCH_NAME
+    echo "paso branch"
+    echo "${branch}"
     def vActual = sh(script: "cat ${env.WORKSPACE}/pom.xml | grep <version>", returnStdout: true).toString().trim()
     def vNuevo = "<version>${tg}</version>"
 
