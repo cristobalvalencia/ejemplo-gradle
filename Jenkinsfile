@@ -91,7 +91,7 @@ def custom_msg()
 
 def extraeTag()
 {
-    def tag = sh 'ls ${env.WORKSPACE}/.git/refs/tags'
+    def tag = sh "ls ${env.WORKSPACE}/.git/refs/tags"
     tag = tag.subString(tag.lenght()-5, tag.lenght())
 
     return tag
@@ -102,7 +102,7 @@ def aumentarVersion()
     def tg = extraeTag()
     def branch = env.BRANCH_NAME
     def chbranch = env.CHANGE_BRANCH  
-    def vActual = sh 'cat ${env.WORKSPACE}/pom.xml | grep <version>'
+    def vActual = sh "cat ${env.WORKSPACE}/pom.xml | grep <version>"
     def vNuevo = "<version>${tg}</version>"
 
     if(branch == "develop"){
