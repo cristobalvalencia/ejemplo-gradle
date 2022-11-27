@@ -93,6 +93,7 @@ def extraeTag()
 {
     def tag = sh "ls ${env.WORKSPACE}/.git/refs/tags/"
     echo "${tag}"
+    sh "git pull"
     tag = tag.subString(tag.lenght()-5, tag.lenght())
 
     return tag
