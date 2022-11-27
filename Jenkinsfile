@@ -18,7 +18,7 @@ pipeline {
                 script{
                     stg == 'Version'
                 }
-                echo "${obtenerAutor()}"
+                echo "${stg}"
                 aumentarVersion()
             }
             
@@ -41,6 +41,7 @@ pipeline {
                 timeout(time: 1, unit: 'HOURS') {
                     waitForQualityGate abortPipeline: true
                 }
+                echo "${stg}"
             }
             
         }
@@ -59,6 +60,7 @@ pipeline {
                         nexusPublisher nexusInstanceId: 'nsx01', nexusRepositoryId: 'EjercicioUnificar-gradle', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "/var/jenkins_home/workspace/ejemplo-gradle_maven-gradle/build/DevOpsUsach2020-${tag}.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: "${tag}"]]]
                     }
                 }
+                echo "${stg}"
             }
             
         }
@@ -70,7 +72,7 @@ pipeline {
                     }
                     echo 'Testing Artifact'
                     sh 'curl -X GET -u admin:admin http://nexus:8081/repository/EjercicioUnificar/com.devopsusachs2020.DevOpsUsach2020.0.0.1.jar -O'
-                    
+                    echo "${stg}"
                 }
                 
         }
@@ -90,7 +92,6 @@ pipeline {
 def custom_msg()
 {
     def stage = env.stg
-    echo "${stage}"
     def AUTHOR = obtenerAutor()
     def JOB_NAME = env.JOB_NAME
     def BUILD_ID= env.BUILD_ID
