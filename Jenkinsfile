@@ -91,7 +91,7 @@ pipeline {
 
 def custom_msg()
 {
-    def stage = env.stg
+    def stage = "${stg}"
     def AUTHOR = obtenerAutor()
     def JOB_NAME = env.JOB_NAME
     def BUILD_ID= env.BUILD_ID
