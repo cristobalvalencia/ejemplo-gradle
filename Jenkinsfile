@@ -120,7 +120,8 @@ def obtenerAutor()
 {   
     sh "git pull"
     def autor = sh(script: "git log -p -1 | grep Author", returnStdout: true).toString().trim()
-    largo = tag.length()
+    echo "${autor}"
+    largo = autor.length()
     def resultado = autor.substring(8, largo)
     return resultado
 }
