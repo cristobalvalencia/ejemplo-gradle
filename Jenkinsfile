@@ -1,6 +1,6 @@
 def mvn
 def grdl
-def stg
+def stg = ""
 
 pipeline {
     agent any
@@ -16,7 +16,7 @@ pipeline {
         stage('Version') { 
             steps {
                 script{
-                    stg == 'Version'
+                    stg = "Version"
                 }
                 echo "${stg}"
                 aumentarVersion()
