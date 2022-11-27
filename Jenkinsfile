@@ -97,9 +97,9 @@ def extraeTag()
     echo "${tag}"
     largo = tag.length()
     echo "${largo}"
-    tag = tag.subString(largo-5, largo)
-    echo "${tag}"
-    return tag
+    def resultado = tag.subString(largo-5, largo)
+    echo "${resultado}"
+    return resultado
 }
 
 def aumentarVersion()
