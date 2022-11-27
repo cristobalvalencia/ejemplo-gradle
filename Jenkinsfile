@@ -43,15 +43,16 @@ pipeline {
         }
         stage('uploadNexus') { 
             steps {
+                def tag = extraeTag()
                 script{
                     stg == 'uploadNexus'
-                
+
                     echo 'Uploading Nexus'
                     if(params.Build_Tool == 'maven'){
-				        nexusPublisher nexusInstanceId: 'nsx01', nexusRepositoryId: 'EjercicioUnificar-maven', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '/var/jenkins_home/workspace/ejemplo-gradle_maven-gradle/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+				        nexusPublisher nexusInstanceId: 'nsx01', nexusRepositoryId: 'EjercicioUnificar-maven', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "/var/jenkins_home/workspace/ejemplo-gradle_maven-gradle/build/DevOpsUsach2020-${tag}.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: "${tag}"]]]
                     }
                     if(params.Build_Tool == 'gradle'){
-                        nexusPublisher nexusInstanceId: 'nsx01', nexusRepositoryId: 'EjercicioUnificar-gradle', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: '/var/jenkins_home/workspace/ejemplo-gradle_maven-gradle/build/DevOpsUsach2020-0.0.1.jar']], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: '0.0.1']]]
+                        nexusPublisher nexusInstanceId: 'nsx01', nexusRepositoryId: 'EjercicioUnificar-gradle', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: "/var/jenkins_home/workspace/ejemplo-gradle_maven-gradle/build/DevOpsUsach2020-${tag}.jar"]], mavenCoordinate: [artifactId: 'DevOpsUsach2020', groupId: 'com.devopsusach2020', packaging: 'jar', version: "${tag}"]]]
                     }
                 }
             }
@@ -93,11 +94,8 @@ def extraeTag()
     sh "git pull"
     sh "ls ${env.WORKSPACE}/.git/refs/tags/ > /var/jenkins_home/trabajo/tag.txt"
     def tag = sh(script: "cat /var/jenkins_home/trabajo/tag.txt", returnStdout: true).toString().trim()
-    echo "${tag}"
     largo = tag.length()
-    echo "${largo}"
     def resultado = tag.substring(largo-5, largo)
-    echo "${resultado}"
     return resultado
 }
 def tagAntiguo()
@@ -105,11 +103,8 @@ def tagAntiguo()
     sh "git pull"
     sh "ls ${env.WORKSPACE}/.git/refs/tags/ > /var/jenkins_home/trabajo/tag.txt"
     def tag = sh(script: "cat /var/jenkins_home/trabajo/tag.txt", returnStdout: true).toString().trim()
-    echo "${tag}"
     largo = tag.length()
-    echo "${largo}"
     def resultado = tag.substring(largo-11, largo-6)
-    echo "${resultado}"
     return resultado
 }
 
@@ -123,9 +118,12 @@ def aumentarVersion()
     echo "${branch}"
     echo "${env.WORKSPACE}"
     def vActual = tagAntiguo()
-    echo "${vActual}"
+    vActual = "<version>${vActual}</version>"
     def vNuevo = "<version>${tg}</version>"
     echo "${vNuevo}"
+
+    sh "sed s/${vActual}/${vNuevo}/g ${env.WORKSPACE}/pom.xml"
+    sh "sed s/${vActual}/${vNuevo}/g ${env.WORKSPACE}"
     script{
         if("${branch}" == 'develop'){
             echo "Entro a if develop"
