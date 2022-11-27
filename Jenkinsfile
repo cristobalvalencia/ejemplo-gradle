@@ -37,7 +37,6 @@ pipeline {
                 script{
                     stg == 'TAGS'
                 }
-                echo "Metodo 2"
                 aumentarVersion()
             }
             
@@ -105,7 +104,8 @@ def extraeTag()
 def aumentarVersion()
 {
     echo "Comienzo aumentarVersion()"
-    def tg = ${extraeTag()}
+    def tg = extraeTag()
+    echo "Paso primer metodo"
     def branch = env.BRANCH_NAME
     def chbranch = env.CHANGE_BRANCH  
     def vActual = sh "cat ${env.WORKSPACE}/pom.xml | grep <version>"
