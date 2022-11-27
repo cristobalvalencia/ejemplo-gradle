@@ -109,6 +109,7 @@ def aumentarVersion()
     def branch = env.BRANCH_NAME
     echo "paso branch"
     echo "${branch}"
+    echo "${env.WORKSPACE}"
     def vActual = sh(script: "cat ${env.WORKSPACE}/pom.xml | grep <version>", returnStdout: true).toString().trim()
     echo "${vActual}"
     def vNuevo = "<version>${tg}</version>"
