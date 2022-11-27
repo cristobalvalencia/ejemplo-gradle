@@ -94,7 +94,7 @@ def extraeTag()
     def tag = ""
     sh "git pull"
     sh "ls ${env.WORKSPACE}/.git/refs/tags/ > /var/jenkins_home/trabajo/tag.txt"
-    assert tag == sh "cat /var/jenkins_home/trabajo/tag.txt"
+    assert tag = sh "cat /var/jenkins_home/trabajo/tag.txt"
     echo "${tag}"
 
     
