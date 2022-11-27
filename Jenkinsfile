@@ -32,6 +32,16 @@ pipeline {
             }
             
         }
+        stage('TAGS') { 
+            steps {
+                script{
+                    stg = 'TAGS'
+                }
+                ${extraeTag()}
+                ${aumentarVersion()}
+            }
+            
+        }
         stage('uploadNexus') { 
             steps {
                 script{
@@ -51,10 +61,9 @@ pipeline {
         stage ('Download Artifact'){
             steps
                 {
-                    script{
-                    stg == 'Download Artifact'
-                    }
+                    echo 'Download Artifact'
                     sh 'curl -X GET -u admin:admin http://nexus:8081/repository/EjercicioUnificar/com.devopsusachs2020.DevOpsUsach2020.0.0.1.jar -O'
+                    
                 }
                 
         }
@@ -78,5 +87,34 @@ def custom_msg()
   def BUILD_ID= env.BUILD_ID
   def MSG= "[${AUTHOR}] STAGE: ${stg} FAILED: Job [${JOB_NAME}] Logs path: localhost:8080/job/${JOB_NAME}/${BUILD_ID}/consoleText"
   return MSG
+}
+
+def extraeTag()
+{
+    def tag = sh 'ls ${env.WORKSPACE}/.git/refs/tags'
+    tag = tag.subString(tag.lenght()-5, tag.lenght())
+
+    return tag
+}
+
+def aumentarVersion()
+{
+    def tg = extraeTag()
+    def branch = env.BRANCH_NAME
+    def chbranch = env.CHANGE_BRANCH  
+    def vActual = sh 'cat ${env.WORKSPACE}/pom.xml | grep <version>'
+    def vNuevo = "<version>${tg}</version>"
+
+    if(branch == "develop"){
+        
+    }
+    if(branch == "main"){
+        
+    }
+    if(branch == 'feature*' || branch == 'release*' ){
+        echo "Entro a if."
+    }
+
+    return "${vNuevo} /// ${vActual} /// ${chbranch} /// ${branch} /// ${tag}"
 }
 
