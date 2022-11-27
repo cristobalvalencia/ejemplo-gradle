@@ -11,7 +11,17 @@ pipeline {
 	parameters{
 		choice(name: 'Build_Tool', choices:['maven', 'gradle'], description: '')
 	}
+    
 	stages {
+        stage('Version') { 
+            steps {
+                script{
+                    stg == 'Version'
+                }
+                aumentarVersion()
+            }
+            
+        }
         stage('Building..') {
             steps{
                 script{
@@ -29,15 +39,6 @@ pipeline {
                 timeout(time: 1, unit: 'HOURS') {
                     waitForQualityGate abortPipeline: true
                 }
-            }
-            
-        }
-        stage('TAGS') { 
-            steps {
-                script{
-                    stg == 'TAGS'
-                }
-                aumentarVersion()
             }
             
         }
