@@ -115,13 +115,11 @@ def aumentarVersion()
     def vNuevo = "<version>${tg}</version>"
     echo "${vNuevo}"
     script{
-        if("${branch}" == "develop"){
-            
-        }
-        if("${branch}" == "main"){
-            
-        }
-        if("${branch}" == 'feature*' || "${branch}" == 'release*' ){
+        if("${branch}" == 'develop'){
+            echo "Entro a if develop"
+        } else if("${branch}" == 'main'){
+            echo "Entro a if main."
+        } else if("${branch}" == 'feature*' || "${branch}" == 'release*' ){
             echo "Entro a if."
         }
     }
