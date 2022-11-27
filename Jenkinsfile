@@ -120,8 +120,8 @@ def aumentarVersion()
     echo "${branch}"
     echo "${env.WORKSPACE}"
     def vActual = tagAntiguo()
-    vActual = "<version>${vActual}</version>"
-    def vNuevo = "<version>${tg}</version>"
+    vActual = "${vActual}"
+    def vNuevo = "${tg}"
     echo "${vNuevo}"
     echo "./var/jenkins_home/trabajo/cambioTag.sh ${vActual} ${vNuevo} ${env.WORKSPACE}"
     sh "./var/jenkins_home/trabajo/cambioTag.sh ${vActual} ${vNuevo} ${env.WORKSPACE}"
